@@ -7,7 +7,7 @@ from tkinter import messagebox
 class EnhancedClipboard:
     def __init__(self, master):
         self.master = master
-        master.title("Hanging adhesive board")
+        master.title("增强型悬挂记事板")
         master.geometry("500x350+100+100")
         master.resizable(True, True)  # 允许窗口自由调整大小
         
@@ -34,7 +34,7 @@ class EnhancedClipboard:
         # 保存按钮
         save_btn = tk.Button(
             control_frame,
-            text="Sava",
+            text="保存当前内容",
             command=self.save_content,
             bg="#66CCFF",
             width=12
@@ -44,7 +44,7 @@ class EnhancedClipboard:
         # 历史按钮
         history_btn = tk.Button(
             control_frame,
-            text="History",
+            text="查看历史记录",
             command=self.show_history,
             bg="#99FF99",
             width=12
@@ -54,7 +54,7 @@ class EnhancedClipboard:
         # 清空按钮
         clear_btn = tk.Button(
             control_frame,
-            text="Clear",
+            text="清空内容",
             command=self.clear_content,
             bg="#FF6666",
             width=10
@@ -80,8 +80,8 @@ class EnhancedClipboard:
                 self.last_clip = current_clip
                 self.append_content(current_clip.strip())
         except Exception as e:
-            print(f"Clipboard access exception: {e}")
-
+            print(f"剪贴板访问异常: {e}")
+        
         self.master.after(500, self.monitor_clipboard)
 
     def append_content(self, text):
@@ -95,7 +95,7 @@ class EnhancedClipboard:
         """保存当前内容到历史文件"""
         content = self.text_area.get("1.0", tk.END).strip()
         if not content:
-            messagebox.showwarning("Save failed", "The current content is empty")
+            messagebox.showwarning("保存失败", "当前内容为空")
             return
         
         # 生成文件名
@@ -105,9 +105,9 @@ class EnhancedClipboard:
         try:
             with open(filepath, "w", encoding="utf-8") as f:
                 f.write(content)
-            messagebox.showinfo("Successfully saved", f"The file has been saved to:\n{filepath}")
+            messagebox.showinfo("保存成功", f"文件已保存至：\n{filepath}")
         except Exception as e:
-            messagebox.showerror("Save failed", f"Error:\n{str(e)}")
+            messagebox.showerror("保存失败", f"错误信息：\n{str(e)}")
 
     def show_history(self):
         """显示历史存档目录"""
@@ -118,7 +118,7 @@ class EnhancedClipboard:
                 os.system(f'open "{self.history_dir}"' if sys.platform == 'darwin' 
                           else f'xdg-open "{self.history_dir}"')
         except Exception as e:
-            messagebox.showerror("Open failed", f"Unable to open directory:\n{str(e)}")
+            messagebox.showerror("打开失败", f"无法打开目录：\n{str(e)}")
 
     def clear_content(self):
         """清空文本框内容"""
