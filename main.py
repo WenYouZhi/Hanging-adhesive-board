@@ -4,25 +4,24 @@ import time
 import os
 from tkinter import messagebox
 
-
 class EnhancedClipboard:
     def __init__(self, master):
         self.master = master
         master.title("Hanging adhesive board")
         master.geometry("500x350+100+100")
         master.resizable(True, True)  # 允许窗口自由调整大小
-
+        
         # 窗口置顶设置
         master.wm_attributes("-topmost", 1)
         self.last_clip = ""
-
+        
         # 创建历史目录
         self.history_dir = "clip_history"
         os.makedirs(self.history_dir, exist_ok=True)
-
+        
         # 构建界面
         self.create_widgets()
-
+        
         # 启动剪贴板监控
         self.monitor_clipboard()
 
@@ -31,7 +30,7 @@ class EnhancedClipboard:
         # 控制按钮区域
         control_frame = tk.Frame(self.master)
         control_frame.pack(fill=tk.X, padx=5, pady=2)
-
+        
         # 保存按钮
         save_btn = tk.Button(
             control_frame,
@@ -41,7 +40,7 @@ class EnhancedClipboard:
             width=12
         )
         save_btn.pack(side=tk.LEFT, padx=2)
-
+        
         # 历史按钮
         history_btn = tk.Button(
             control_frame,
@@ -51,7 +50,7 @@ class EnhancedClipboard:
             width=12
         )
         history_btn.pack(side=tk.LEFT, padx=2)
-
+        
         # 清空按钮
         clear_btn = tk.Button(
             control_frame,
@@ -98,11 +97,11 @@ class EnhancedClipboard:
         if not content:
             messagebox.showwarning("Save failed", "The current content is empty")
             return
-
+        
         # 生成文件名
         filename = time.strftime("clip_%Y%m%d_%H%M%S.txt")
         filepath = os.path.join(self.history_dir, filename)
-
+        
         try:
             with open(filepath, "w", encoding="utf-8") as f:
                 f.write(content)
@@ -116,7 +115,7 @@ class EnhancedClipboard:
             if os.name == 'nt':  # Windows系统
                 os.startfile(self.history_dir)
             else:  # Mac/Linux系统
-                os.system(f'open "{self.history_dir}"' if sys.platform == 'darwin'
+                os.system(f'open "{self.history_dir}"' if sys.platform == 'darwin' 
                           else f'xdg-open "{self.history_dir}"')
         except Exception as e:
             messagebox.showerror("Open failed", f"Unable to open directory:\n{str(e)}")
@@ -124,7 +123,6 @@ class EnhancedClipboard:
     def clear_content(self):
         """清空文本框内容"""
         self.text_area.delete("1.0", tk.END)
-
 
 if __name__ == "__main__":
     root = tk.Tk()
